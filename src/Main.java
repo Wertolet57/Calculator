@@ -36,31 +36,56 @@ public class Main {
         if (a<1 || a>10 || b<1 || b>10){
             throw new Exception();
         }
-        switch (expression[1]){
+        result = switch (expression[1]){
             case "+":
-                result=a+b;
-                break;
+                yield a+b;
             case "-":
-                result=a-b;
-                break;
+                yield a-b;
             case "*":
-                result=a*b;
-                break;
+                yield a*b;
             case "/":
-                result=a/b;
-                break;
+                yield a/b;
             default:
                 throw new Exception();
-        }
+        };
         if(isArabic1){
             return String.valueOf(result);
         }
-        if(result<1){
+        return intToRoman(result);
+    }
+    public static String intToRoman(int x) throws Exception {
+        if(x<1){
             throw new Exception();
         }
-        if(result<11){
-
+        String result = "";
+        RomanNum[] romanNum = RomanNum.values();
+        if (x<40){
+            result+=unit(x, romanNum[9].toString());
         }
-        return "rom";
+        else if(x<50){
+            result+=romanNum[9].toString()+romanNum[10];
+        }
+        else if(x<90){
+            x-=50;
+            result+=romanNum[10];
+            result+=unit(x, romanNum[9].toString());
+        }
+        else if(x<100){
+            result+=romanNum[9].toString()+romanNum[11];
+        }
+        else{
+            result+=romanNum[11];
+        }
+        if(x%10!=0){
+            result+=romanNum[x%10-1];
+        }
+        return result;
+    }
+    public static String unit(int x,String romanNum){
+        String result="";
+        for (int i=0; i<x/10; i++){
+            result+=romanNum;
+        }
+        return result;
     }
 }
